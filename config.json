@@ -1,0 +1,9 @@
+{
+  "pagination":{
+    "www.ultimatesubaru.org": "/?page="
+  },
+  "archive_api":{
+    "save": "https://web.archive.org/save",
+    "check": "http://archive.org/wayback/available?url="
+  }
+}
