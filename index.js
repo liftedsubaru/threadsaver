@@ -1,7 +1,7 @@
 const rp = require('request-promise');
 const _ = require('lodash')
 const config = require('./config');
-const Url = require('url-parse');
+const urlParser = require('domain-name-parser');
 
 async function waybackCheck(event) {
   const waybackCheck = await rp(`${config.archive_api.check}${event.url}`);
@@ -19,10 +19,10 @@ async function handler(event, context) {
   if (archiveUrl) return context.done(archiveUrl);
 
   // request some archives
-  const resourceInfo = Url(event.url);
-  const paginationString = config.pagination[resourceInfo.host];
+  const resourceInfo = urlParser(event.url);
+  const paginationString = config.pagination[resourceInfo.sld]; // .sld should return 'google' from www.google.com
 
-  if(!paginationString){
+  if (!paginationString) {
     // TODO default behavior
   }
 
@@ -30,7 +30,7 @@ async function handler(event, context) {
 
   for (var i = 0; i < event.pageCount; i++) {
     const url = `${config.archive_api.save}/${event.url}${paginationString}${i}`;
-    console.log(`Processing ${url}`);
+    console.log(`Requesting Archive for: ${url}`);
     await rp(url);
   }
 
