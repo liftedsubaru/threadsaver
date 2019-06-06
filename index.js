@@ -22,6 +22,10 @@ async function handler(event, context) {
   const resourceInfo = Url(event.url);
   const paginationString = config.pagination[resourceInfo.host];
 
+  if(!paginationString){
+    // TODO default behavior
+  }
+
   let pageCount = event.pageCount || 1;
 
   for (var i = 0; i < event.pageCount; i++) {
