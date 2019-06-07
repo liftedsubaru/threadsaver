@@ -19,6 +19,7 @@ async function handler(event, context) {
   if (archiveUrl) return context.done(archiveUrl);
 
   // request some archives
+  //TODO: This doesnt work the way you think it does
   const resourceInfo = urlParser(event.url);
   const paginationString = config.pagination[resourceInfo.tokenized[1]]; // .sld should return 'google' from www.google.com
 
