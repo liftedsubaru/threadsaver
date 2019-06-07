@@ -1,6 +1,6 @@
 {
   "pagination":{
-    "www.ultimatesubaru.org": "/?page="
+    "ultimatesubaru": "/?page="
   },
   "archive_api":{
     "save": "https://web.archive.org/save",

@@ -13,23 +13,30 @@ async function waybackCheck(event) {
   event == { url, pageCount }
 */
 async function handler(event, context) {
-  if (!event.url !== undefined) return context.done({error:{status_code:400,description: "url not defined"}}');
+  if (!event.url) return context.done({error:{status_code:400,description: "url not defined"}});
 
   const archiveUrl = await waybackCheck(event);
   if (archiveUrl) return context.done(archiveUrl);
 
   // request some archives
   const resourceInfo = urlParser(event.url);
-  const paginationString = config.pagination[resourceInfo.sld]; // .sld should return 'google' from www.google.com
+  const paginationString = config.pagination[resourceInfo.tokenized[1]]; // .sld should return 'google' from www.google.com
 
-  if (!paginationString) {
-    // TODO default behavior
-  }
-
+  let archiveRequest = `${config.archive_api.save}/${event.url}`
   let pageCount = event.pageCount || 1;
 
+  // if pagination is not mapped for this domain, dont paginate
+  if (!paginationString) {
+    pageCount = 1;
+  }
+
   for (var i = 0; i < event.pageCount; i++) {
-    const url = `${config.archive_api.save}/${event.url}${paginationString}${i}`;
+    let url = archiveRequest;
+
+    if (paginationString) {
+      url = `${archiveRequest}${paginationString}${i}`
+    }
+
     console.log(`Requesting Archive for: ${url}`);
     await rp(url);
   }
