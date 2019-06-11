@@ -1,6 +1,8 @@
 {
-  "pagination":{
-    "ultimatesubaru": "/?page="
+  "pagination": {
+    "ultimatesubaru": "/?page=",
+    "forums.nasioc.com":"&page=",
+    "thesamba":"&start="
   },
   "archive_api":{
     "save": "https://web.archive.org/save",
